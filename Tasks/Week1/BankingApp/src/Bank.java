@@ -1,13 +1,12 @@
 import java.util.ArrayList;
 import java.security.SecureRandom;
 
-// Bank class acts like an API that provide certain services and it is not binded to a specific bank account.
-final class Bank {
-    private static ArrayList<Account> accounts = new ArrayList<>();
+class Bank {
+    private static ArrayList<Account> accounts;
 
-    private static SecureRandom rand = new SecureRandom();
+    private SecureRandom rand;
 
-    public static String generateAccountNumber() {
+    public String generateAccountNumber() {
         StringBuilder sb = new StringBuilder();
 
         // First digit between 1 and 9
@@ -21,45 +20,52 @@ final class Bank {
         return sb.toString();
     }
 
-    private Bank() {
-        throw new IllegalStateException("Bank class cannot be instantiated");
+    Bank() {
+        accounts = new ArrayList<>();
+        rand = new SecureRandom();
     }
 
-    public static void addAccount(Account account) {
+    public void addAccount(Account account) {
         accounts.add(account);
     }
 
-    public static ArrayList<Account> getAccounts() {
+    public ArrayList<Account> getAccounts() {
         return accounts;
     }
 
-    public static void deposit(String accountNumber, double amount) {
+    public Account findAccount(String accountNumber) {
         for (Account account : accounts) {
             if (account.getAccountNumber().equals(accountNumber)) {
-                account.deposit(amount);
-                return;
+                return account;
             }
         }
-        System.out.println("\nERROR: Bank account does not exist!");
+        return null;
     }
 
-    public static void withdraw(String accountNumber, double amount) {
-        for (Account account : accounts) {
-            if (account.getAccountNumber().equals(accountNumber)) {
-                account.withdraw(amount);
-                return;
-            }
+    public void deposit(String accountNumber, double amount) {
+        Account account = findAccount(accountNumber);
+        if (account != null) {
+            account.deposit(amount);
+        } else {
+            System.out.println("\nERROR: Bank account does not exist!");
         }
-        System.out.println("\nERROR: Bank account does not exist!");
     }
 
-    public static void displayBalance(String accountNumber) {
-        for (Account account : accounts) {
-            if (account.getAccountNumber().equals(accountNumber)) {
-                System.out.println("\nBalance of Account " + accountNumber + ": $" + account.getBalance());
-                return;
-            }
+    public void withdraw(String accountNumber, double amount) {
+        Account account = findAccount(accountNumber);
+        if (account != null) {
+            account.withdraw(amount);
+        } else {
+            System.out.println("\nERROR: Bank account does not exist!");
         }
-        System.out.println("\nERROR: Bank account does not exist!");
+    }
+
+    public void displayBalance(String accountNumber) {
+        Account account = findAccount(accountNumber);
+        if (account != null) {
+            System.out.println("\nBalance of Account " + accountNumber + ": $" + account.getBalance());
+        } else {
+            System.out.println("\nERROR: Bank account does not exist!");
+        }
     }
 }
