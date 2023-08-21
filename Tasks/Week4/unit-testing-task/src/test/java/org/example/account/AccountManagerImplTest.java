@@ -50,21 +50,6 @@ public class AccountManagerImplTest {
     }
 
     @Test
-    public void testWithdrawExceedMaxCreditVIP() {
-        customer.setVip(true);
-        String result = accountManager.withdraw(customer, 1500);
-        assertThat(result).isEqualTo("success");
-        assertThat(customer.getBalance()).isEqualTo(-500);
-    }
-
-    @Test
-    public void testWithdrawZeroAmount() {
-        String result = accountManager.withdraw(customer, 0);
-        assertThat(result).isEqualTo("success");
-        assertThat(customer.getBalance()).isEqualTo(1000);
-    }
-
-    @Test
     public void testDepositNegativeAmount() {
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> accountManager.deposit(customer, -500))

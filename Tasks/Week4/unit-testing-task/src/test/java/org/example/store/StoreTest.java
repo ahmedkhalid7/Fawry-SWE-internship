@@ -26,7 +26,7 @@ public class StoreTest {
     @BeforeEach
     public void setUp() {
         product = new Product("Test Product", 100, 2);
-        customer = new Customer("John Doe", 500, true, 1000, false);
+        customer = new Customer("Ahmed Khalid", 500, true, 1000, false);
     }
 
     @Test
