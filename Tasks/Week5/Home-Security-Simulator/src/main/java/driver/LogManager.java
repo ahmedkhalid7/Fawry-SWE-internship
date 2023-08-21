@@ -1,4 +1,6 @@
-package org.example;
+package driver;
+
+import messages.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 // Singleton pattern: Singleton class
-class LogManager {
+public class LogManager {
     private static LogManager instance;
     private String logFilePath;
     private PrintWriter writer;
@@ -23,7 +25,7 @@ class LogManager {
         }
     }
 
-    static LogManager getInstance() {
+    public static LogManager getInstance() {
         if(instance == null) {
             synchronized(LogManager.class) {
                 if(instance == null) {
@@ -34,10 +36,16 @@ class LogManager {
         return instance;
     }
 
-    void log(String message) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss: ");
-        writer.println(dtf.format(LocalDateTime.now()) + message);
+    public void log(String event) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss ");
+        String message = dtf.format(LocalDateTime.now()) + event;
+        writer.println(message);
         writer.flush();
+
+        SMSAdapter smsAdapter = new SMSAdapterImpl(new SMSSender());
+        SMSAdapter iMessageAdapter = new IMessageAdapter(new IMessageImpl());
+        smsAdapter.sendSMS(message, "+201127695327");
+        iMessageAdapter.sendSMS(message, "+201169253727");
     }
 
     void close() {
