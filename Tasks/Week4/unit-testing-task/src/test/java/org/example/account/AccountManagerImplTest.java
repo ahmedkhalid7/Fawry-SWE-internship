@@ -43,6 +43,13 @@ public class AccountManagerImplTest {
     }
 
     @Test
+    public void testWithdrawMaxCreditExceeded() {
+        String result = accountManager.withdraw(customer, 3000);
+        assertThat(result).isEqualTo("maximum credit exceeded");
+        assertThat(customer.getBalance()).isEqualTo(1000);
+    }
+
+    @Test
     public void testWithdrawInsufficientBalanceWithCredit() {
         String result = accountManager.withdraw(customer, 2000);
         assertThat(result).isEqualTo("success");

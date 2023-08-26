@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -60,6 +62,18 @@ public class StoreTest {
 
         verify(accountManager, times(1)).withdraw(customer, product.getPrice());
         verifyNoMoreInteractions(accountManager);
+        assertEquals(2, product.getQuantity());
+    }
+
+    @Test
+    public void testWithdrawalMaximumCreditExceeded() {
+        product.setPrice(3000);
+        when(accountManager.withdraw(customer, product.getPrice())).thenReturn("maximum credit exceeded");
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> myStore.buy(product, customer));
+        assertEquals("Payment failure: maximum credit exceeded", exception.getMessage());
+
+        verify(accountManager).withdraw(customer, product.getPrice());
         assertEquals(2, product.getQuantity());
     }
 }
