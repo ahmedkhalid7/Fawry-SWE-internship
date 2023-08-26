@@ -42,10 +42,10 @@ public class LogManager {
         writer.println(message);
         writer.flush();
 
-        SMSAdapter smsAdapter = new SMSAdapterImpl(new SMSSender());
+        SMSSender smsSender = new SMSSender();
         SMSAdapter iMessageAdapter = new IMessageAdapter(new IMessageImpl());
-        smsAdapter.sendSMS(message, "+201127695327");
-        iMessageAdapter.sendSMS(message, "+201169253727");
+        smsSender.sendMessage(event,"+201127695327");
+        iMessageAdapter.sendSMS(event, "+201169253727");
     }
 
     void close() {

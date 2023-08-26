@@ -4,7 +4,6 @@ import sensors.*;
 import devices.Sprinkler;
 
 public class HomeSecuritySimulator {
-
     public static void main(String[] args) {
 
         //get smoke sensor factory A
