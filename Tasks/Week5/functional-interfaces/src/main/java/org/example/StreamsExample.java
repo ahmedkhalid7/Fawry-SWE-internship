@@ -40,7 +40,8 @@ public class StreamsExample {
         Consumer<Book> bookPrinterConsumer = System.out::println;
         authors
                 .stream()
-                .flatMap(author -> author.books.stream()).filter(bookPublishedPredicate)
+                .flatMap(author -> author.books.stream())
+                .filter(bookPublishedPredicate)
                 .forEach(bookPrinterConsumer);
 
         // TODO With functional interfaces used directly
@@ -55,7 +56,7 @@ public class StreamsExample {
         System.out.println(authors
                 .stream()
                 .flatMap(author -> author.books.stream())
-                .mapToDouble(bookToDoubleFunction).average());
+                .mapToDouble(bookToDoubleFunction).average().orElse(0));
 
         // TODO With functional interfaces used directly
         System.out.println(authors
