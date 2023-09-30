@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Social Media App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f2f3f5;
+    }
+
+    .container {
+      width: 500px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    .header {
+      text-align: center;
+      font-size: 24px;
+      color: #3b5998;
+    }
+
+    .buttons {
+      text-align: center;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      border: 1px solid #3b5998;
+      border-radius: 5px;
+      background-color: #3b5998;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #4472c4;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Social Media App</h1>
+  </div>
+
+  <div class="buttons">
+    <a href="/users/sign-up" class="button">Sign Up</a>
+    <a href="/users/sign-in" class="button">Sign In</a>
+  </div>
+</div>
+</body>
+</html>
