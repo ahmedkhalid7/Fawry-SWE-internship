@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <meta charset="UTF-8">
+  <title>Feed</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f2f3f5;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    .post-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .post-card {
+      border: 1px solid #ddd;
+      padding: 10px;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .post-text {
+      margin-bottom: 10px;
+    }
+
+    .post-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .post-action-button {
+      display: inline-flex;
+      margin-right: 10px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3b5998;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-custom-background{
+      background-color: #3b5998;
+    }
+
+    .post-action-button:hover {
+      background-color: #4472c4;
+    }
+
+    .post-action-counter {
+      margin-left: 5px;
+      font-weight: bold;
+    }
+
+    .post-meta {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 5px;
+    }
+
+    .post-author {
+      font-weight: bold;
+    }
+
+    .post-dates {
+      margin-left: 10px;
+    }
+
+    .post-separator {
+      border-top: 1px solid #ddd;
+      margin: 10px 0;
+    }
+  </style>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom-background">
+  <div class="container">
+    <a class="navbar-brand" href="#" th:href="@{/feed}">Social Media App</a>
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/users/profile}">My Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/users/sign-out}">Logout</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link navbar-custom-background" th:href="@{/posts/writePost}">Write Post</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="post-grid">
+    <div class="post-card" th:each="post : ${posts}">
+      <div class="post-meta">
+        <span class="post-author" th:text="${post.author.firstName} + ' ' + ${post.author.lastName}"></span>
+        <span class="post-dates">
+          <span th:text="'Publishing date: ' + ${#dates.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></span><br>
+          <span th:text="'Last update date: ' + ${#dates.format(post.updatedAt, 'dd MMM yyyy HH:mm')}"></span>
+        </span>
+      </div>
+      <div class="post-separator"></div>
+      <div class="post-text" th:text="${post.content}"></div>
+      <div class="post-actions">
+        <a class="post-action-button" th:href="@{/likes/addOrDelete(id=${post.id})}">
+          Like <span class="post-action-counter" th:text="${post.likes.size()}"></span>
+        </a>
+        <a class="post-action-button" th:href="@{/comments/view(id=${post.id})}">
+          Comment <span class="post-action-counter" th:text="${post.comments.size()}"></span>
+        </a>
+        <a class="post-action-button" th:if="${post.author.email == #authentication.name}" th:href="@{/posts/editPost(id=${post.id})}">
+          Edit Post
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
